@@ -1,6 +1,9 @@
 --Final Project COP 4010 @ Group 6--
 --Clock in/Clock out app--
 
+MEMBERS
+	- Eddie Cubas
+
 README
 
 	This app is a time clock designed for workplaces. Includes functionality for recording employee clock 	in/ clock out times, requesting time off, user sign ups, user search, and employee scheduling.
