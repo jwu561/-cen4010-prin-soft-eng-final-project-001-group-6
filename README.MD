@@ -4,6 +4,7 @@
 MEMBERS
 	- Eddie Cubas
 	-Juan Fernandez
+	-Jonathan Wu
 
 README
 
