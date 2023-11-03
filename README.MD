@@ -3,6 +3,7 @@
 
 MEMBERS
 	- Eddie Cubas
+	-Juan Fernandez
 
 README
 
