@@ -15,19 +15,16 @@
     .navbar-brand {
       font-size: 1.5rem; /* Make title font size a bit larger */
     }
-    .nav-fill w-100 {
-      justify-content: space-around;
-    }
   </style>
 </head>
 <body>
 
+<!-- Navigation Bar -->
 <div class="bg-light fixed-top">
   <div class="container">
     <!-- Title -->
     <h1 class="text-center mt-3">Seal Team 6</h1>
   </div>
-  <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,22 +32,22 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav nav-fill w-100">
-          <li class="nav-item">
+          <li class="nav-item mr-5">
             <a class="nav-link" href="#">Home</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item mr-5">
             <a class="nav-link" href="#">Request Time Off</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item mr-5">
             <a class="nav-link" href="#">Schedules</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item mr-5">
             <a class="nav-link" href="#">List</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item mr-5">
             <a class="nav-link" href="#">Sign Out</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item mr-5">
             <a class="nav-link" href="#">Search</a>
           </li>
         </ul>
@@ -59,16 +56,27 @@
   </nav>
 </div>
 
-<!-- Padding for body content to ensure it doesn't overlay or get hidden behind the fixed navbar -->
-<div style="padding-top: 140px;">
-  <!-- Body content goes here -->
+<!-- Padding for body content to ensure it doesn't overlap with the fixed navbar -->
+<div style="padding-top: 100px;">
+  <!-- Buttons -->
+  <div class="container mt-5">
+    <div class="input-group mb-3">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">Clock In</button>
+        <button class="btn btn-danger" type="button">Clock Out</button>
+        <button class="btn btn-success" type="button">Meal</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- jQuery and Bootstrap Bundle (includes Popper) -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+
 
 
   
