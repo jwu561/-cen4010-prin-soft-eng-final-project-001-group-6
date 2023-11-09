@@ -5,6 +5,7 @@ MEMBERS
 	- Eddie Cubas
 	-Juan Fernandez
 	-Jonathan Wu
+	-Aaron Green
 
 README
 
