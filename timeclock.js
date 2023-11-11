@@ -1,16 +1,14 @@
 //Timeclock.js
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const glob = require('glob');
-const os = require('os');
 const Parse = require('parse/node');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
 // Initialize Parse
-Parse.initialize("ffumw6fRM9wPdWp8WaNRbziAcoTOKyFlSAEYIgwI", "uA0JxfBGBq7lZ0ZXxjIIrBI0SqdnHveV1YyHJh4M");
+Parse.initialize("ffumw6fRM9wPdWp8WaNRbziAcoTOKyFlSAEYIgwI", "uA0JxfBGBq7lZ0ZXxjIIrBI0SqdnHveV1YyHJh4M", "o9XDl5AvtU6h0566OHxbrVXsQXl9l2PNY22BtHQ9");
 Parse.serverURL = "https://parseapi.back4app.com/";
 
 const swaggerOptions = {
@@ -33,7 +31,7 @@ app.use(express.static('./public'));
 /**
  * @swagger
  * /login:
- *  get:
+ *  post:
  *    summary: User login using user id & password
  *    description: Use this to login clients
  *    parameters:
@@ -102,13 +100,13 @@ app.post('/login', async (req, res) => {
  *        required: true
  *        schema:
  *          type: string
- *      - name: first name
+ *      - name: firstName
  *        description: User's first name
  *        in: formData
  *        required: true
  *        schema:
  *          type: string
- *      - name: last name
+ *      - name: lastName
  *        description: User's last name
  *        in: formData
  *        required: true
@@ -123,21 +121,32 @@ app.post('/login', async (req, res) => {
  *        description: Unsuccessful -- Username or email already in use
  */
   //Signing up user
-  async function signUpUser() {
-    const user = new Parse.User();
-    user.set('username', 'A string');
-    user.set('email', 'A string');
-    user.set('first_name', 'A string');
-    user.set('last_name', 'A string');
-    user.set('password', '#Password123');
-  
-    try {
-      let userResult = await user.signUp();
-      console.log('User signed up', userResult);
-    } catch (error) {
-      console.error('Error while signing up user', error);
-    }
+  app.post('/signup', async (req, res) => {
+    const { userId, email, password, firstName, lastName } = req.body;
+  // Check if all required information is provided
+  if (!userId || !email || !password || !firstName || !lastName) {
+    return res.status(400).json({ message: 'Missing required information' });
   }
+
+  try {
+    // Create a new Parse user and set properties
+    const user = new Parse.User();
+    user.set('username', userId);
+    user.set('email', email);
+    user.set('password', password);
+    user.set('first_name', firstName);
+    user.set('last_name', lastName);
+
+    // Sign up the user
+    await user.signUp();
+
+    // Successfully signed up
+    res.status(201).json({ message: 'Successfully created user' });
+  } catch (error) {
+    // Failed to sign up (username or email already in use)
+    res.status(409).json({ message: 'Username or email already in use' });
+  }
+});
   
   // Call signUpUser() when you want to sign up a user
   // signUpUser();
