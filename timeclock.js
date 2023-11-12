@@ -43,7 +43,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('./public'));
+app.use(express.static('./pages html'));
 
 /**
  * @swagger
