@@ -1,0 +1,11 @@
+
+
+/* This is the navigation bar */
+.navbar {
+  background-color: #f8f9fa; /* Bootstrap light background color */
+}
+.navbar-brand {
+  font-size: 1.5rem; /* Make title font size a bit larger */
+}
+
+
