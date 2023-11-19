@@ -93,19 +93,29 @@
           },
           selectable: true,
           selectHelper: true,
-          select: function (start, end) {
-            var title = prompt('Event Title:');
-            if (title) {
-              var eventData = {
-                title: title,
-                start: start,
-                end: end,
-                allDay: false
-              };
-              $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-            }
-            $('#calendar').fullCalendar('unselect');
-          },
+          defaultTimedEventDuration: '08:00:00', // Set default duration to 8 hours
+          select: function (start, end, jsEvent, view) {
+    var title = prompt('Event Title:');
+    if (title) {
+        // Check if it's month view, set default time range if true
+        if (view.type === 'month') {
+          start = moment(start.format());  // Format to ensure correct time
+            end = moment(start).add({ hours: 17 });  // Set end time to 5 pm (8 am + 9 hours)
+        }
+
+        // Create the event
+        var eventData = {
+            title: title,
+            start: start,
+            end: end,
+            allDay: false
+        };
+
+        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+    }
+    $('#calendar').fullCalendar('unselect');
+},
+
           editable: true, // Enable drag-and-drop
           eventResize: function (event, delta, revertFunc) {
             if (!confirm("Are you sure about this change?")) {
@@ -146,6 +156,7 @@
         });
       });
     </script>
+    
   
   </body>
 </html>
