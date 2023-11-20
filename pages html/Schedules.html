@@ -99,8 +99,8 @@
     if (title) {
         // Check if it's month view, set default time range if true
         if (view.type === 'month') {
-          start = moment(start.format());  // Format to ensure correct time
-            end = moment(start).add({ hours: 17 });  // Set end time to 5 pm (8 am + 9 hours)
+            start = moment(start.format('YYYY-MM-DD') + 'T08:00:00');  // Set start time to 8 am
+            end = moment(start.format('YYYY-MM-DD') + 'T17:00:00');  // Set end time to 5 pm
         }
 
         // Create the event
