@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule</title>
+
+  <!-- FullCalendar CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+
+  <!-- jQuery (required for FullCalendar) -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <!-- FullCalendar JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+
+  
+
+  <title>Seal Team 6 Timekeeping</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+   <!-- Link to your external CSS file -->
+   <link rel="stylesheet" href="/styles.css">
+  <!-- Include the JavaScript file -->
+  <script src="/timeclock.js"></script>
+
+
+  <style>
+    /* Customize your styles here */
+    #calendar {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<!-- Navigation Bar -->
+<div class="bg-light fixed-top">
+    <div class="container">
+      <!-- Title -->
+      <h1 class="text-center mt-3">Seal Team 6</h1>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav nav-fill w-100">
+            <li class="nav-item mr-5">
+              <a class="nav-link" href="homepage.html">Home</a>
+            </li>
+            <li class="nav-item mr-5">
+              <a class="nav-link" href="#">Request Time Off</a>
+            </li>
+            <li class="nav-item mr-5">
+              <a class="nav-link" href="Schedules.html">Schedules</a>
+            </li>
+            <li class="nav-item mr-5">
+              <a class="nav-link" href="#">List</a>
+            </li>
+            <li class="nav-item mr-5">
+              <a class="nav-link" href="#">Sign Out</a>
+            </li>
+            <li class="nav-item mr-5">
+              <a class="nav-link" href="#">Search</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+
+
+
+  <body>
+
+    <!-- Container for the Calendar -->
+    <div id="calendar"></div>
+  
+    <script>
+      $(document).ready(function () {
+        // Initialize FullCalendar
+        $('#calendar').fullCalendar({
+          header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+          },
+          selectable: true,
+          selectHelper: true,
+          defaultTimedEventDuration: '08:00:00', // Set default duration to 8 hours
+          select: function (start, end, jsEvent, view) {
+    var title = prompt('Event Title:');
+    if (title) {
+        // Check if it's month view, set default time range if true
+        if (view.type === 'month') {
+            start = moment(start.format('YYYY-MM-DD') + 'T08:00:00');  // Set start time to 8 am
+            end = moment(start.format('YYYY-MM-DD') + 'T17:00:00');  // Set end time to 5 pm
+        }
+
+        // Create the event
+        var eventData = {
+            title: title,
+            start: start,
+            end: end,
+            allDay: false
+        };
+
+        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+    }
+    $('#calendar').fullCalendar('unselect');
+},
+
+          editable: true, // Enable drag-and-drop
+          eventResize: function (event, delta, revertFunc) {
+            if (!confirm("Are you sure about this change?")) {
+              revertFunc();
+            } else {
+              // Handle event resize
+            }
+          },
+          eventDrop: function (event, delta, revertFunc) {
+            if (!confirm("Are you sure about this change?")) {
+              revertFunc();
+            } else {
+              // Handle event drop
+            }
+          },
+          eventClick: function (event) {
+            var title = prompt('Edit Event Title:', event.title);
+            if (title) {
+              event.title = title;
+              $('#calendar').fullCalendar('updateEvent', event);
+            }
+          },
+          eventRender: function (event, element) {
+            element.append("<span class='closeon'>X</span>");
+            element.find(".closeon").click(function () {
+              $('#calendar').fullCalendar('removeEvents', event._id);
+            });
+          },
+          // Add more options and events as needed
+          events: [
+            {
+              title: 'Event 1',
+              start: '2023-11-15T10:00:00',
+              end: '2023-11-15T12:00:00'
+            },
+            // Add more events as needed
+          ]
+        });
+      });
+    </script>
+    
+  
+  </body>
+</html>
