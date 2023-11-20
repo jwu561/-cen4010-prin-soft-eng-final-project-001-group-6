@@ -1,4 +1,4 @@
-
+//Timeclock.js
 
 
 const express = require('express');
@@ -28,6 +28,8 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('./pages html'));
+app.use(express.static('public'));
+
 
 /**
  * @swagger
@@ -152,29 +154,42 @@ app.post('/login', async (req, res) => {
   // Call signUpUser() when you want to sign up a user
   // signUpUser();
   
-  
-  
+/**
+ * @swagger
+ * /logout:
+ *  post:
+ *    summary: User logout
+ *    description: Use this to logout clients
+ *    responses:
+ *      200:
+ *        description: Successful logout
+ *      403:
+ *        description: Error -- No user logged in
+ */
+// Logout endpoint
+app.post('/logout', async (req, res) => {
+  try {
+    // Checks if the user is logged in
+    const currentUser = Parse.User.current();
+    if (currentUser) {
+      // Logs out the current user
+      await Parse.User.logOut();
+      console.log('User logged out');
+      res.status(200).json({ message: 'Successful logout' });
+    } else {
+      console.log('No user logged in');
+      res.status(403).json({ message: 'No user logged in' });
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
 const port = process.env.PORT || 5678;
 app.listen(port, () => {
   console.log('Server is running...');
   console.log(`Webapp:   http://localhost:${port}/`);
   console.log(`API Docs: http://localhost:${port}/api-docs`);
 });
-
-//Timeclock.js
-
-function updateRealTimeDate() {
-  var currentDate = new Date();
-  var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  var day = daysOfWeek[currentDate.getDay()];
-  var month = months[currentDate.getMonth()];
-  var date = currentDate.getDate();
-  var year = currentDate.getFullYear();
-  var formattedDate = "It's " + day + ", " + month + " " + date + ", " + year;
-  document.getElementById("realTimeDate").textContent = formattedDate;
-}
-
-updateRealTimeDate();
-setInterval(updateRealTimeDate, 60000);
-
