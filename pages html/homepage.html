@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seal Team 6 Timekeeping</title>
@@ -11,14 +8,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
-   <!-- Link to your external CSS file -->
-   <link rel="stylesheet" href="/styles.css">
-  <!-- Include the JavaScript file -->
-  <script src="/timeclock.js"></script>
-  <script src="/script.js"></script>
-  <script src="/timepunch.js"></script>
-
-
+  <!-- Link to your external CSS file -->
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
@@ -45,7 +36,7 @@
             <a class="nav-link" href="Schedules.html">Schedules</a>
           </li>
           <li class="nav-item mr-5">
-            <a class="nav-link" href="list.html">List</a>
+            <a class="nav-link" href="#">List</a>
           </li>
           <li class="nav-item mr-5">
             <a class="nav-link" href="#">Sign Out</a>
@@ -59,46 +50,65 @@
   </nav>
 </div>
 
-
-<!-- Padding for body content to ensure it doesn't overlap with the fixed navbar -->
-
 <!-- Display Real-Time Date -->
-<div >
+<div>
   <p id="realTimeDate"></p>
 </div>
 
+<!-- Include the JavaScript file -->
+<script src="/timeclock.js"></script>
+<script src="/script.js"></script>
+<script src="/timepunch.js"></script>
 
-<script>
-  // Call the JavaScript function
-  updateRealTimeDate();
-</script>
-
-
-
-<!-- Padding for body content to ensure it doesn't overlap with the fixed navbar -->
-<div style="padding-top: 0px;">
-  <!-- Primary Buttons -->
-
-  
-  <div class="container text-center mt-3">
-    <div class="btn-group" role="group">
-      <button class="btn btn-primary" type="button">Clock In</button>
-      <button class="btn btn-danger" type="button">Clock Out</button>
-      <button class="btn btn-success" type="button">Meal</button>
-    </div>
+<!-- Primary Buttons -->
+<div class="container text-center mt-3">
+  <div class="btn-group" role="group">
+    <button class="btn btn-primary" type="button" onclick="clockIn()">Clock In</button>
+    <button class="btn btn-danger" type="button" onclick="clockOut()">Clock Out</button>
+    <button class="btn btn-success" type="button" onclick="takeMeal()">Meal</button>
   </div>
 </div>
 
+<!-- Display clock in and clock out times -->
+<div class="container text-center mt-3">
+  <p id="clockInTimeDisplay">Clock In Time: </p>
+  <p id="clockOutTimeDisplay">Clock Out Time: </p>
+</div>
 
+<script>
+  // Variables to track clock in and clock out times
+  let clockInTime;
+  let clockOutTime;
 
+  // Function to update time display
+  function updateTimeDisplay(elementId, time) {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.textContent = time;
+    }
+  }
 
+  // Function to handle clock in
+  function clockIn() {
+    clockInTime = new Date();
+    updateTimeDisplay('clockInTimeDisplay', 'Clock In Time: ' + clockInTime.toLocaleTimeString());
+  }
 
+  // Function to handle clock out
+  function clockOut() {
+    if (clockInTime) {
+      clockOutTime = new Date();
+      updateTimeDisplay('clockOutTimeDisplay', 'Clock Out Time: ' + clockOutTime.toLocaleTimeString());
+    } else {
+      alert('Please clock in first.');
+    }
+  }
 
+  // Function to handle meal
+  function takeMeal() {
+    alert('Meal break taken.');
+  }
+</script>
 
 </body>
 </html>
-
-
-
-  
- 
