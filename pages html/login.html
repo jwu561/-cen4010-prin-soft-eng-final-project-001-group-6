@@ -29,7 +29,48 @@
 
         <p class="signup-link">New customer? <a href="signup.html">Sign Up</a></p>
     </div>
-   
+    <script>
+        function attemptLogin() {
+    // Get values from input fields
+    var userId = document.getElementById("id").value;
+    var password = document.getElementById("pw").value;
+
+    // Call the login function with the obtained values
+    login(userId, password);
+}
+        function login(userId, password) {
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    password: password
+                }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Successful login (HTTP status 200)
+                    window.location.href = '/homepage.html'; // Redirect to home page
+                } else if (response.status === 400 || response.status === 401) {
+                    // Unsuccessful login (HTTP status 400 or 401)
+                    return response.json();
+                } else {
+                    throw new Error('Unexpected response from the server');
+                }
+            })
+            .then(data => {
+                // Handle error message for unsuccessful login
+                console.error('Error:', data.message);
+                // Display the error message on the HTML page
+                document.getElementById("errorMessage").innerText = data.message;
+            })
+            .catch((error) => {
+                console.error('Error:', error.message);
+            });
+        }
+    </script>
     <!-- Add an empty script tag to include the external script -->
     <script type="text/javascript" src="script.js"></script>
 </body>
