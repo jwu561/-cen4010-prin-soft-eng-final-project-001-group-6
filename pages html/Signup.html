@@ -11,7 +11,7 @@
   <!-- Link to your external CSS file -->
   <link rel="stylesheet" href="/styles.css">
   <!-- Include the JavaScript file -->
-  <script src="/timeclock.js"></script>
+  <script src="timeclock.js"></script>
 
 </head>
 
@@ -32,8 +32,12 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-3"> <!-- Increase the column width for better spacing -->
-      <form  class="mt-4"> <!-- Added top margin to the form -->
+      <form id="signupForm" action="/signup" class="mt-4"> <!-- Added top margin to the form -->
         <!-- Input Fields -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="userId" placeholder="Enter new Username">
+        </div>
         <div class="form-group">
           <label for="firstName">First Name</label>
           <input type="text" class="form-control" id="firstName" placeholder="Enter your first name">
@@ -51,13 +55,64 @@
           <input type="password" class="form-control" id="password" placeholder="Create your password">
         </div>
         <!-- Sign Up Button -->
-        <button type="button" class="btn btn-primary btn-block">Sign Up</button>
+        <button type="submit" class="btn btn-primary btn-block" onclick="attemptSignup()">Sign Up</button>
       </form>
+      <p id="errorMessage"></p>
     </div>
   </div>
 </div>
 
+<script>
+document.getElementById('signupForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent default form submission
 
+  var userId = document.getElementById("userId").value;
+  var firstName = document.getElementById("firstName").value;
+  var lastName = document.getElementById("lastName").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+
+  signup(userId, firstName, lastName, email, password);
+});
+
+function signup(userId, firstName, lastName, email, password) {
+  fetch('/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userId: userId,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password
+    }),
+  })
+  .then(response => {
+    if (response.ok) {
+      // Successful signup (HTTP status 201)
+      window.location.href = '/login.html'; // Redirect to login page
+    } else if (response.status === 400 || response.status === 409) {
+      // Unsuccessful signup (HTTP status 400 or 409)
+      return response.json();
+    } else {
+      throw new Error('Unexpected response from the server');
+    }
+  })
+  .then(data => {
+    // Handle error message for unsuccessful signup
+    console.error('Error:', data.message);
+    // Display the error message on the HTML page
+    document.getElementById("errorMessage").innerText = data.message;
+  })
+  .catch((error) => {
+    console.error('Error:', error.message);
+  });
+}
+
+
+</script>
 <!-- jQuery and Bootstrap Bundle (includes Popper) -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
