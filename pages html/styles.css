@@ -2,98 +2,126 @@
 
 /* This is the navigation bar */
 .navbar {
-  background-color: #f8f9fa; /* Bootstrap light background color */
-}
-.navbar-brand {
-  font-size: 1.5rem; /* Make title font size a bit larger */
-}
-
-
-   body {
-        background-color: #F7F7F6;
-        display: flex;
-        flex-direction: column;
-        align-items: center;         /* this is the main backgroup of the page*/
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
-        font-family: 'Tahoma', sans-serif;
-    }
-     body::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('https://i.ibb.co/PzktJVR/clockandwork.webp');
-        background-size: cover;
-        opacity: 0.6; /* Adjust the opacity for the fade effect */
-        z-index: -1; /* Place it behind the page content */
-    }
-
-    .horizontal-box {
-        height:60px;
-        width: 95%;
-        background-color: transparent;   /* create the blue box */
-        padding: 15px;
-        text-align: center;
-        color: #F3F3F2;
-        border-radius: 10px;
-    }
-    .horizontal-box h1 {     
-        margin: 0;          /* set the margin and font size for the text inside horizontal box */
-        font-size: 28px;
-        color: black;
-        text-decoration: none;  /* signup link details.*/
-        font-weight: bold; 
-        margin-top: 20px;
-        
-    }
-    .vertical-box {
-        height: 50%;
-        background-color: white;
-        padding: 20px;
-        text-align: center;            /* create the vertical box with a border */
-        border: 5px solid #F3F3F2;
-        border-radius: 10px;
-        max-width: 300px;
-    }
-    .vertical-box img {
-        display: block;
-        margin:  auto 60px;   /*block for the image of the clock inside the box*/
-        width: 125px;
-    }
-    .p {
-        margin: 30px 0;
-        font-size: 20px;
-    }
-    .vertical-box label[for="id"] {
-        text-align: center;               /* id to go inside vertical box */
-        font-family: 'Tahoma', sans-serif; 
-        display: block;
-        margin: 5px 0;
-    }
-    .vertical-box label[for="pw"] {
-        text-align: center;
-        display: block;    /* pw to go inside vertical box */
-        font-size: 18px;
-    }
-    .vertical-box a.login-link {
-        text-align: center;
-        display: block;
-        text-decoration: none;  /* log in link inside vertical box */
-        color: #337ab7;
-        font-weight: bold;
-    }
-
-    
-    .signup-link a {
-        color: #337ab7;
-        text-decoration: none;  /* signup link details.*/
-        font-weight: bold; 
-        margin-top: 20px;
-        
-    }
-
+    background-color: #f8f9fa; /* Bootstrap light background color */
+  }
+  .navbar-brand {
+    font-size: 1.5rem; /* Make title font size a bit larger */
+  }
   
+  
+     body {
+          background-color: #F7F7F6;
+          display: flex;
+          flex-direction: column;
+          align-items: center;         /* this is the main backgroup of the page*/
+          justify-content: center;
+          height: 100vh;
+          margin: 0;
+          font-family: 'Tahoma', sans-serif;
+      }
+       body::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url('https://i.ibb.co/PzktJVR/clockandwork.webp');
+          background-size: cover;
+          opacity: 0.6; /* Adjust the opacity for the fade effect */
+          z-index: -1; /* Place it behind the page content */
+      }
+  
+      .horizontal-box {
+          height:60px;
+          width: 95%;
+          background-color: transparent;   /* create the blue box */
+          padding: 15px;
+          text-align: center;
+          color: #F3F3F2;
+          border-radius: 10px;
+      }
+      .horizontal-box h1 {     
+          margin: 0;          /* set the margin and font size for the text inside horizontal box */
+          font-size: 28px;
+          color: black;
+          text-decoration: none;  /* signup link details.*/
+          font-weight: bold; 
+          margin-top: 20px;
+          
+      }
+      .vertical-box {
+          height: 50%;
+          background-color: white;
+          padding: 20px;
+          text-align: center;            /* create the vertical box with a border */
+          border: 5px solid #F3F3F2;
+          border-radius: 10px;
+          max-width: 300px;
+      }
+      .vertical-box img {
+          display: block;
+          margin:  auto 60px;   /*block for the image of the clock inside the box*/
+          width: 125px;
+      }
+      .p {
+          margin: 30px 0;
+          font-size: 20px;
+      }
+      .vertical-box label[for="id"] {
+          text-align: center;               /* id to go inside vertical box */
+          font-family: 'Tahoma', sans-serif; 
+          display: block;
+          margin: 5px 0;
+      }
+      .vertical-box label[for="pw"] {
+          text-align: center;
+          display: block;    /* pw to go inside vertical box */
+          font-size: 18px;
+      }
+      .vertical-box a.login-link {
+          text-align: center;
+          display: block;
+          text-decoration: none;  /* log in link inside vertical box */
+          color: #337ab7;
+          font-weight: bold;
+      }
+  
+      
+      .signup-link a {
+          color: #337ab7;
+          text-decoration: none;  /* signup link details.*/
+          font-weight: bold; 
+          margin-top: 20px;
+          
+      }
+  
+  
+      h3 {
+          font-size: 20px;
+      }
+      h4 {
+          font-size: 12px;;
+      }
+  
+      .display {
+          background-color: white;
+          border: gray solid 2px;
+          padding: 10px;
+      }
+  
+  
+      #search {
+          left: 100px;
+      }
+  #searchResults {
+      display: none; /* Hide the div initially */
+      background-color: white; /* Set a background color for the div */
+      border: gray solid 2px;
+      padding: 10px;
+    }
+    
+    #searchResults.has-content {
+      display: block; /* Show the div when it has content */
+    }
+    
