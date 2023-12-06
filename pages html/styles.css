@@ -96,4 +96,32 @@
         
     }
 
+
+    h3 {
+        font-size: 20px;
+    }
+    h4 {
+        font-size: 12px;;
+    }
+
+    .display {
+        background-color: white;
+        border: gray solid 2px;
+        padding: 10px;
+    }
+
+
+    #search {
+        left: 100px;
+    }
+#searchResults {
+    display: none; /* Hide the div initially */
+    background-color: white; /* Set a background color for the div */
+    border: gray solid 2px;
+    padding: 10px;
+  }
+  
+  #searchResults.has-content {
+    display: block; /* Show the div when it has content */
+  }
   

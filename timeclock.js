@@ -59,6 +59,7 @@ app.use(express.static('public'));
  *        description: Unsuccessful login - Wrong username or password
  */
 //Function for logging in
+var loggedUser;
 app.post('/login', async (req, res) => {
     const { userId, password } = req.body;
   
@@ -72,7 +73,7 @@ app.post('/login', async (req, res) => {
       const user = await Parse.User.logIn(userId, password);
       // Successfully logged in
       res.status(200).json({ message: 'Successful login', user: user.toJSON() });
-      const username = userId;
+      loggedUser = userId;
     } catch (error) {
       // Failed to log in (wrong username or password)
       res.status(401).json({ message: 'Wrong username or password' });
@@ -206,18 +207,34 @@ app.post('/logout', async (req, res) => {
  *      404:
  *        description: Error -- User not found
  */
-app.get('/users/:userId', async (req, res) => {
-  var userId = req.params.userId; // Fetching userId from request parameters
-  const User = Parse.User;
-  const query = new Parse.Query(User);
-
+app.get('/users/:username', async (req, res) => {
+  const username = req.params.username; // Fetching username from request parameters
+  const query = new Parse.Query(Parse.User);
+  query.equalTo("username", username); // Using equalTo to find the user by username
+  
   try {
-    let user = await query.get(userId);
-    console.log('User found', user);
-    res.status(200).json({ user: user.toJSON() }); // Sending the user data in the response
+    const user = await query.first(); // Finding the user by username
+    if (user) {
+      const objectId = user.id; // Retrieving objectId associated with the user
+      console.log('User found:', username, 'ObjectId:', objectId);
+      
+      try {
+        const userDataQuery = new Parse.Query(Parse.User);
+        const userData = await userDataQuery.get(objectId); // Retrieving user data using objectId
+        
+        console.log('User data:', userData);
+        res.status(200).json({ user: userData }); // Sending user data in the response
+      } catch (error) {
+        console.error('Error while fetching user data:', error);
+        res.status(500).json({ message: 'Error fetching user data' });
+      }
+    } else {
+      console.log('User not found:', username);
+      res.status(404).json({ message: 'User not found' }); // Sending error response if user not found
+    }
   } catch (error) {
-    console.error('Error while fetching user', error);
-    res.status(404).json({ message: 'User not found' }); // Sending error response if user not found
+    console.error('Error while fetching user:', error);
+    res.status(500).json({ message: 'Error fetching user' });
   }
 });
 
@@ -361,17 +378,10 @@ app.post('/classes/schedules', async (req, res) => {
 
 /**
  * @swagger
- * /classes/schedules/{userId}:
+ * /classes/schedules:
  *  get:
- *    summary: Get user information
- *    description: Use this to look at user information
- *    parameters:
- *       - name: Employee
- *         description: Employee name
- *         in: path
- *         required: true
- *         schema:
- *           type: string
+ *    summary: Get schedules
+ *    description: Use this to see all schedules
  *    responses:
  *      200:
  *        description: Successful 
@@ -379,12 +389,13 @@ app.post('/classes/schedules', async (req, res) => {
  *        description: Error -- User not found
  */
 //Reading schedules
-app.get('/classes/Schedules', async (req, res) => {
+// Reading schedules
+app.get('/classes/schedules', async (req, res) => {
   const Schedules = Parse.Object.extend('Schedules');
   const query = new Parse.Query(Schedules);
 
   try {
-    const results = await query.find(userId);
+    const results = await query.find();
     const schedulesData = results.map(object => ({
       Employee: object.get('Employee'),
       Week: object.get('Week'),
@@ -395,13 +406,56 @@ app.get('/classes/Schedules', async (req, res) => {
       Thursday: object.get('Thursday'),
       Friday: object.get('Friday'),
       Saturday: object.get('Saturday'),
-    
     }));
-  
-    res.json({ schedules: schedulesData }); // Sending schedules data back as JSON
+
+    res.status(200).json({ schedules: schedulesData }); // Sending schedules data back as JSON with a 200 status
   } catch (error) {
     console.error('Error while fetching Schedules', error);
-    res.status(500).send('Error fetching schedules'); // Sending an error status and message back
+    res.status(500).send('Error fetching schedules'); // Sending an error status and message back for internal server error
+  }
+});
+
+/**
+ * @swagger
+ * /classes/Time_Off_Requests:
+ *   post:
+ *     summary: Create schedules
+ *     description: Used to create schedules
+ *     parameters:
+ *       - name: Employee
+ *         description: Employee
+ *         in: formData
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: Dates
+ *         description: Dates requested off
+ *         in: formData
+ *         required: true
+ *         format: date
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Schedule created successfully
+ *       400:
+ *         description: Invalid input provided
+ */
+// Creating time off requests
+app.post('/classes/Time_Off_Requests', async (req, res) => {
+  const { Employee, Dates } = req.body;
+
+  const myNewObject = new Parse.Object('Time_Off_Requests');
+  myNewObject.set('Employee', Employee);
+  myNewObject.set('Dates', Dates);
+
+  try {
+    const result = await myNewObject.save();
+    console.log('Time off request created', result);
+    res.status(200).json({ message: 'Time off request created successfully', result });
+  } catch (error) {
+    console.error('Error while creating time off request: ', error);
+    res.status(400).json({ message: 'Invalid input provided' });
   }
 });
 
