@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seal Team 6 Timekeeping</title>
+  <script type="text/javascript" src="timeclock.js"></script>
+    <script type="text/javascript" src="script.js"></script>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -13,6 +15,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <!-- Link to your external CSS file -->
   <link rel="stylesheet" href="/styles.css">
+ 
 </head>
 <body>
 
@@ -60,10 +63,10 @@
   <div class="row justify-content-center">
     <div class="col-md-6"> <!-- Adjust the column width as needed -->
       <form class="form-inline" onsubmit="searchEmployee(); return false;">
-        <div class="input-group">
-          <input type="text" class="form-control" id="employeeIdInput" placeholder="Search Employee ID">
+        <div class="input-group" id="search">
+          <input type="text" class="form-control" id="username" placeholder="Employee Username">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <button type="submit" class="btn btn-primary btn-block" >Search</button>
           </div>
         </div>
       </form>
@@ -73,29 +76,44 @@
 </div>
 
 
-
 <script>
-  function searchEmployee() {
-    // Get the input value
-    var employeeId = document.getElementById('employeeIdInput').value;
+  async function searchEmployee() {
+    const username = document.getElementById("username").value;
 
-    // Perform the search 
-    var searchResults = performSearch(employeeId);
-
-    // Display the results 
-    displayResults(searchResults);
+    try {
+      const response = await fetch(`/users/${username}`);
+      if (response.ok) {
+        const data = await response.json();
+        displaySearchResults(data);
+      } else {
+        const errorData = await response.json();
+        displayError(errorData.message);
+      }
+    } catch (error) {
+      displayError('An error occurred while processing your request.');
+    }
   }
 
-  function performSearch(employeeId) {
-    // search logic (replace with actual search logic)
-    return "Employee ID: " + employeeId + " - Found!";
+  function displaySearchResults(data) {
+    const searchResultsDiv = document.getElementById("searchResults");
+    searchResultsDiv.innerHTML = `
+      <h2>Search Results:</h2>
+      <p><strong>Username</strong>: ${data.user.username}</p>
+      <p><strong>First name</strong>: ${data.user.first_name}</p>
+      <p><strong>Last name</strong>: ${data.user.last_name}</p>
+      <p><strong>Date hired</strong>: ${data.user.createdAt}</p>
+      
+    `;
+    searchResultsDiv.classList.add('has-content');
   }
 
-  function displayResults(results) {
-    // Display the results in the searchResults div 
-    document.getElementById('searchResults').innerHTML = results;
+  function displayError(message) {
+    const searchResultsDiv = document.getElementById("searchResults");
+    searchResultsDiv.innerHTML = `<p>Error: ${message}</p>`;
+    searchResultsDiv.classList.add('has-content');
   }
 </script>
+
 
 </body>
 </html>

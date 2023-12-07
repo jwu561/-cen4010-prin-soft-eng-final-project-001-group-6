@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seal Team 6 Timekeeping</title>
+  <script type="text/javascript" src="timeclock.js"></script>
+    <script type="text/javascript" src="script.js"></script>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -39,7 +41,7 @@
             <a class="nav-link" href="list.html">List</a>
           </li>
           <li class="nav-item mr-5">
-            <a class="nav-link" href="#">Sign Out</a>
+            <a class="nav-link" href="login.html">Sign Out</a>
           </li>
           <li class="nav-item mr-5">
             <a class="nav-link" href="#">Search</a>
@@ -92,6 +94,7 @@
   function clockIn() {
     clockInTime = new Date();
     updateTimeDisplay('clockInTimeDisplay', 'Clock In Time: ' + clockInTime.toLocaleTimeString());
+    createClockIn();
   }
 
   // Function to handle clock out
@@ -108,7 +111,9 @@
   function takeMeal() {
     alert('Meal break taken.');
   }
+  
 </script>
 
+<div id="errormessage"></div>
 </body>
 </html>

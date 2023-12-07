@@ -96,4 +96,52 @@
         
     }
 
+    
+    h3 {
+        font-size: 20px;
+    }
+    h4 {
+        font-size: 12px;;
+    }
+
+    .display {
+      width: max-content;
+        background-color: white;
+        border: gray solid 2px;
+        padding: 10px;
+    }
+
+
+    #search {
+        left: 100px;
+    }
+#searchResults {
+    display: none; /* Hide the div initially */
+    background-color: white; /* Set a background color for the div */
+    border: gray solid 2px;
+    padding: 10px;
+  }
+  
+  #searchResults.has-content {
+    display: block; /* Show the div when it has content */
+  }
+
+  
+  .user-info {
+      margin-left: auto;
+      margin-right: auto;
+      width: max-content;
+      background-color: #ffffff;
+      font-size: large;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .user-info p {
+
+      display: inline;
+      margin-right: 20px; /* Adjust space between different information */
+    }
+  
+
   

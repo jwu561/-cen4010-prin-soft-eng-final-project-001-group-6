@@ -75,27 +75,49 @@
   <h2 class="text-center">Employee List</h2>
 
   <!-- Display Information -->
-  <div class="row mt-4">
-    <div class="col">
-      <h4>First Name</h4>
-      <!-- Placeholder for First Name from Backend -->
-    </div>
-    <div class="col">
-      <h4>Last Name</h4>
-      <!-- Placeholder for Last Name from Backend -->
-    </div>
-    <div class="col">
-      <h4>Hours Worked</h4>
-      <!-- Placeholder for Hours Worked from Backend -->
-    </div>
-    <div class="col">
-      <h4>Vacation Time</h4>
-      <!-- Placeholder for Vacation Time from Backend -->
-    </div>
+  <div class="row mt-4" id="display">
+    <!-- User data will be displayed here -->
   </div>
 </div>
 
 <!-- Add your JavaScript and jQuery links if needed -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- JavaScript and jQuery code -->
+
+<script>
+  // Function to fetch and display user data
+  $(document).ready(function() {
+    $.ajax({
+      url: '/users', // Endpoint for getting user data
+      type: 'GET',
+      success: function(users) {
+        if (users.length > 0) {
+          users.forEach(function(user) {
+            // Create HTML elements to display user data with assigned classes
+            var userHTML = `
+              <div class="col display">
+                <div class="user-info">
+                  <p><strong>Username:</strong> ${user.username} &nbsp;&nbsp;
+                  <strong>First Name:</strong> ${user.first_name} &nbsp;&nbsp;
+                  <strong>Last Name:</strong> ${user.last_name} &nbsp;&nbsp;
+                  <strong>Date Hired:</strong> ${user.createdAt} &nbsp;&nbsp;</p>
+                </div>
+              </div>
+            `;
+            $('#display').append(userHTML); // Append user data to the user list
+          });
+        } else {
+          $('#display').append('<p>No users found</p>'); // Display message if no users found
+        }
+      },
+      error: function(error) {
+        console.error('Error fetching user data:', error);
+        $('#display').append('<p>Error fetching users</p>'); // Display error message if fetching fails
+      }
+    });
+  });
+</script>
+
 
 </body>
 </html>

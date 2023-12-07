@@ -73,6 +73,40 @@
 
   <body>
     <!-- Container for the Calendar -->
-    <div id="calendar"></div>
+    <div id="schedules" class="display"></div>
+    <script>
+    
+    // Function to send a request and display schedules
+    async function getSchedules() {
+      try {
+        const response = await fetch('/classes/schedules');
+        const data = await response.json();
+
+        // Access the schedules div and display the fetched data
+        const schedulesDiv = document.getElementById('schedules');
+        schedulesDiv.innerHTML = '<h2>Schedules</h2>';
+        data.schedules.forEach(schedule => {
+          schedulesDiv.innerHTML += `
+          <h3>Employee: ${schedule.Employee}</h3>
+          <h4>Week: ${schedule.Week}</h4>
+          <p><strong>Sunday</strong> - ${schedule.Sunday} &nbsp;&nbsp;
+          <strong>Monday</strong> - ${schedule.Monday} &nbsp;&nbsp;
+          <strong>Tuesday</strong> - ${schedule.Tuesday} &nbsp;&nbsp;
+          <strong>Wednesday</strong> - ${schedule.Wednesday} &nbsp;&nbsp;
+          <strong>Thursday</strong> - ${schedule.Thursday} &nbsp;&nbsp;
+          <strong>Friday</strong> - ${schedule.Friday} &nbsp;&nbsp;
+          <strong>Saturday</strong> - ${schedule.Saturday} &nbsp;&nbsp;</p>
+
+          `;
+        });
+      } catch (error) {
+        console.error('Error fetching schedules:', error);
+      }
+    }
+
+    // Call getSchedules when the page loads
+    window.onload = getSchedules;
+  </script>
+        
   </body>
 </html>
