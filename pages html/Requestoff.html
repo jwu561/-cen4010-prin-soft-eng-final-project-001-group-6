@@ -223,6 +223,10 @@
 
   <!-- Custom Event Form -->
   <div id="customEventForm" style="display: none;">
+    <form>
+    <label for="employee">Employee:</label>
+    <input type="text" id="employee">
+
     <label for="customEventTitle">Reason:</label>
     <input type="text" id="customEventTitle">
 
@@ -233,14 +237,68 @@
     <input type="text" id="endDate" placeholder="MM/DD/YYYY">
 
     <button id="saveCustomEvent">Save Custom Event</button>
+    </form>
   </div>
 
   <!-- Button to trigger the custom event form -->
   <button id="addCustomEvent">Request Time Off</button>
 
-
-
-
+  <!--Edit this script tag-->
+  <script>
+    document.getElementById('saveCustomEvent').addEventListener('click', function () {
+      document.getElementById('customEventForm').style.display = 'block';
+    });
+  
+    document.getElementById('customEventForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+  
+      var employee = document.getElementById("employee").value;
+      var beginDate = document.getElementById("startDate").value;
+      var endDate = document.getElementById("endDate").value;
+      var reason = document.getElementById("customEventTitle").value; // Corrected ID for reason
+  
+      saveTimeOffRequest(employee, beginDate, endDate, reason);
+    });
+  
+    function saveTimeOffRequest(employee, beginDate, endDate, reason) {
+      fetch('/classes/Time_Off_Requests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Employee: employee,
+          Begin: beginDate,
+          End: endDate,
+          Reason: reason
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            // Successful request (HTTP status 201)
+            alert('Successfully submitted request');
+            document.getElementById('customEventForm').reset(); // Clear the form after successful submission
+            document.getElementById('customEventForm').style.display = 'none'; // Hide the form
+          } else if (response.status === 400 || response.status === 409) {
+            // Unsuccessful request (HTTP status 400 or 409)
+            return response.json();
+          } else {
+            throw new Error('Unexpected response from the server');
+          }
+        })
+        .then(data => {
+          // Handle error message for unsuccessful request
+          console.error('Error:', data.message);
+          // Display the error message on the HTML page
+          document.getElementById("errorMessage").innerText = data.message;
+        })
+        .catch((error) => {
+          console.error('Error:', error.message);
+        });
+    }
+  </script>
+  
+  <div id="errorMessage"></div>
     
   </body>
 </html>
