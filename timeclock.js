@@ -73,7 +73,7 @@ app.post('/login', async (req, res) => {
       const user = await Parse.User.logIn(userId, password);
       // Successfully logged in
       res.status(200).json({ message: 'Successful login', user: user.toJSON() });
-      loggedUser = userId;
+      const username = userId;
     } catch (error) {
       // Failed to log in (wrong username or password)
       res.status(401).json({ message: 'Wrong username or password' });
@@ -247,35 +247,25 @@ app.get('/users/:username', async (req, res) => {
  *     responses:
  *       200:
  *         description: Successful retrieval of user information
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
  *       404:
  *         description: Error - Users not found
  */
-// Assuming 'user' contains the array of user objects
+//GET all user information
 app.get('/users', async (req, res) => {
-  const Users = Parse.Object.extend('Users');
-  const query = new Parse.Query(Users);
-
+  const query = new Parse.Query(Parse.User);
+  
   try {
-    const results = await query.find(userId);
-    const usersData = results.map(object => ({
-      Username: object.get('username'),
-      First_name: object.get('first_name'),
-      Last_name: object.get('last_name'),
-      Email: object.get('email'),
-  
+    const users = await query.find();
+    const usersData = users.map(user => user.toJSON());
     
-    }));
-  
-    res.json({ users: usersData }); // Sending schedules data back as JSON
+    if (usersData.length > 0) {
+      res.status(200).json(usersData); // Sending user data in the response
+    } else {
+      res.status(404).json({ message: 'Users not found' }); // Sending error response if no users found
+    }
   } catch (error) {
-    console.error('Error while fetching Schedules', error);
-    res.status(500).send('Error fetching schedules'); // Sending an error status and message back
+    console.error('Error while fetching users:', error);
+    res.status(500).json({ message: 'Error fetching users' });
   }
 });
 
@@ -428,11 +418,24 @@ app.get('/classes/schedules', async (req, res) => {
  *         required: true
  *         schema:
  *           type: string
- *       - name: Dates
- *         description: Dates requested off
+ *       - name: Begin
+ *         description: Begin Date
  *         in: formData
  *         required: true
  *         format: date
+ *         schema:
+ *           type: string
+ *       - name: End
+ *         description: End Date
+ *         in: formData
+ *         required: true
+ *         format: date
+ *         schema:
+ *           type: string
+ *       - name: Reason
+ *         description: Reason for request
+ *         in: formData
+ *         required: true
  *         schema:
  *           type: string
  *     responses:
@@ -441,13 +444,16 @@ app.get('/classes/schedules', async (req, res) => {
  *       400:
  *         description: Invalid input provided
  */
+
 // Creating time off requests
 app.post('/classes/Time_Off_Requests', async (req, res) => {
-  const { Employee, Dates } = req.body;
+  const { Employee, Begin, End, Reason } = req.body;
 
   const myNewObject = new Parse.Object('Time_Off_Requests');
   myNewObject.set('Employee', Employee);
-  myNewObject.set('Dates', Dates);
+  myNewObject.set('Begin', Begin);
+  myNewObject.set('End', End);
+  myNewObject.set('Reason', Reason);
 
   try {
     const result = await myNewObject.save();
