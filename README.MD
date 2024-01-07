@@ -1,6 +1,4 @@
-heroku: https://timeclock-37fdbc168f98.herokuapp.com/login.html
 
-if not using heroku, you can run the command, "nodemon timeclock.js" on visual studio code with bash terminal.
 
 
 ![](https://github.com/CEN4010-Fall2023-Prin-Soft-Eng/cen4010-prin-soft-eng-final-project-001-group-6/blob/main/finalprojectgifcen4010.gif)
